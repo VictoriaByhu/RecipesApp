@@ -1,3 +1,32 @@
+# Recipes — KMP (Android, Desktop, Web)
+
+Лабораторна робота №4 з курсу «Крос-платформне програмування». Варіант 2: клієнт для відкритого API
+[DummyJSON](https://dummyjson.com/docs/recipes), галузь — **рецепти**.
+
+## Що зроблено в ЛР4
+
+- Kotlin Multiplatform проєкт з таргетами Android, Desktop (JVM) і Web (Wasm/JS).
+- Дизайн згенеровано в [Stitch](https://stitch.withgoogle.com/), з нього взято палітру й шрифт.
+- Кастомна тема Material 3 (`shared/.../theme`): кольори «Paprika & Herbs» (світла й темна схеми),
+  шрифт Montserrat (`composeResources/font`) і заокруглені форми.
+- [Kermit](https://github.com/touchlab/Kermit) для логування (зміна слайдів, завершення онбордингу, зміна теми).
+- [multiplatform-settings](https://github.com/russhwolf/multiplatform-settings) для налаштувань користувача:
+  чи пройдено онбординг і вибрана тема (системна, світла, темна).
+- Онбординг на `HorizontalPager` із 4 слайдами, анімацією масштабу та прозорості, індикатором сторінок
+  і кнопками «Назад», «Далі», «Пропустити», «Почати готувати».
+- Локалізація українською (`values-uk`) та англійською (`values`). Мову можна змінити в налаштуваннях застосунку
+  (Системна / Українська / English), вибір зберігається через multiplatform-settings.
+
+### Промпт для Stitch
+
+> Mobile recipe app onboarding, 4 screens with a horizontal pager: welcome, find what to cook,
+> save favorites, cook step by step. Warm cozy kitchen style, paprika orange primary (#9C4A1A),
+> olive green secondary, cream background (#FFF8F5), large circular illustration with a line icon,
+> bold Montserrat headline, short centered description, pill-shaped page indicator, Back / Next buttons.
+> Plus a simple home screen with greeting and settings card (theme: system/light/dark).
+
+---
+
 This is a Kotlin Multiplatform project targeting Android, Web, Desktop (JVM).
 
 * [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.

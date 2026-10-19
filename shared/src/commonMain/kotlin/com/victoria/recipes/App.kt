@@ -1,47 +1,40 @@
 package com.victoria.recipes
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.animation.Crossfade
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
-
-import recipesapp.shared.generated.resources.Res
-import recipesapp.shared.generated.resources.compose_multiplatform
+import co.touchlab.kermit.Logger
+import com.victoria.recipes.home.HomeScreen
+import com.victoria.recipes.locale.AppLocaleEnvironment
+import com.victoria.recipes.onboarding.OnboardingScreen
+import com.victoria.recipes.settings.AppSettings
+import com.victoria.recipes.theme.RecipesTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+    val settings = remember { AppSettings() }
+
+    LaunchedEffect(Unit) {
+        Logger.setTag("RecipesApp")
+        Logger.i { "App started on ${getPlatform().name}" }
+    }
+
+    AppLocaleEnvironment(languageTag = settings.languageTag) {
+        RecipesTheme(themeMode = settings.themeMode) {
+            Crossfade(targetState = settings.onboardingCompleted) { completed ->
+                if (completed) {
+                    HomeScreen(
+                        themeMode = settings.themeMode,
+                        onThemeModeChange = settings::updateThemeMode,
+                        languageTag = settings.languageTag,
+                        onLanguageChange = settings::updateLanguage,
+                        onShowOnboarding = settings::resetOnboarding,
+                    )
+                } else {
+                    OnboardingScreen(onFinished = settings::completeOnboarding)
                 }
             }
         }
