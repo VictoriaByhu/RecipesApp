@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Рецепти</string>
+
+    <!-- Онбординг -->
+    <string name="onboarding_skip">Пропустити</string>
+    <string name="onboarding_back">Назад</string>
+    <string name="onboarding_next">Далі</string>
+    <string name="onboarding_start">Почати готувати</string>
+    <string name="onboarding_page_counter">%1$d з %2$d</string>
+
+    <string name="onboarding_title_1">Вітаємо в «Рецептах»</string>
+    <string name="onboarding_desc_1">Сотні страв з усього світу, зібрані в одному затишному місці.</string>
+    <string name="onboarding_title_2">Знайдіть, що приготувати</string>
+    <string name="onboarding_desc_2">Переглядайте рецепти за кухнею, складністю та часом приготування й обирайте ідеальний на сьогодні.</string>
+    <string name="onboarding_title_3">Зберігайте улюблене</string>
+    <string name="onboarding_desc_3">Позначайте рецепти, які вам сподобалися, щоб вони завжди були під рукою.</string>
+    <string name="onboarding_title_4">Готуйте крок за кроком</string>
+    <string name="onboarding_desc_4">Зрозумілий список інгредієнтів і прості інструкції допоможуть готувати впевнено.</string>
+
+    <!-- Головний екран -->
+    <string name="home_greeting">Привіт, шефе!</string>
+    <string name="home_subtitle">Що готуємо сьогодні?</string>
+    <string name="home_placeholder_title">Рецепти вже в дорозі</string>
+    <string name="home_placeholder_desc">Список рецептів із DummyJSON з’явиться тут у наступних лабораторних.</string>
+    <string name="settings_title">Налаштування</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_system">Системна</string>
+    <string name="settings_theme_light">Світла</string>
+    <string name="settings_theme_dark">Темна</string>
+    <string name="settings_language">Мова</string>
+    <string name="settings_language_system">Системна</string>
+    <string name="settings_show_onboarding">Показати онбординг знову</string>
+</resources>

@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Recipes</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Start cooking</string>
+    <string name="onboarding_page_counter">%1$d of %2$d</string>
+
+    <string name="onboarding_title_1">Welcome to Recipes</string>
+    <string name="onboarding_desc_1">Hundreds of dishes from all over the world, collected in one cozy place.</string>
+    <string name="onboarding_title_2">Find what to cook</string>
+    <string name="onboarding_desc_2">Browse recipes by cuisine, difficulty and cooking time, and pick the perfect one for today.</string>
+    <string name="onboarding_title_3">Save your favorites</string>
+    <string name="onboarding_desc_3">Mark the recipes you love so they are always just one tap away.</string>
+    <string name="onboarding_title_4">Cook step by step</string>
+    <string name="onboarding_desc_4">Clear ingredients and simple instructions help you cook with confidence.</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Hello, chef!</string>
+    <string name="home_subtitle">What are we cooking today?</string>
+    <string name="home_placeholder_title">Recipes are on the way</string>
+    <string name="home_placeholder_desc">The recipe list from DummyJSON will appear here in the next labs.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">System</string>
+    <string name="settings_show_onboarding">Show onboarding again</string>
+</resources>

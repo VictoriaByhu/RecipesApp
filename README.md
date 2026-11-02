@@ -6,7 +6,7 @@
 ## Що зроблено в ЛР4
 
 - Kotlin Multiplatform проєкт з таргетами Android, Desktop (JVM) і Web (Wasm/JS).
-- Дизайн згенеровано в [Stitch](https://stitch.withgoogle.com/), з нього взято палітру й шрифт.
+- Дизайн для [Stitch](https://stitch.withgoogle.com/) описано промптом нижче (палітра «Paprika & Herbs», шрифт Montserrat).
 - Кастомна тема Material 3 (`shared/.../theme`): кольори «Paprika & Herbs» (світла й темна схеми),
   шрифт Montserrat (`composeResources/font`) і заокруглені форми.
 - [Kermit](https://github.com/touchlab/Kermit) для логування (зміна слайдів, завершення онбордингу, зміна теми).
