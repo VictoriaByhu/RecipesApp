@@ -6,7 +6,6 @@
     <string name="onboarding_back">Назад</string>
     <string name="onboarding_next">Далі</string>
     <string name="onboarding_start">Почати готувати</string>
-    <string name="onboarding_page_counter">%1$d з %2$d</string>
 
     <string name="onboarding_title_1">Вітаємо в «Рецептах»</string>
     <string name="onboarding_desc_1">Сотні страв з усього світу, зібрані в одному затишному місці.</string>
@@ -30,4 +29,23 @@
     <string name="settings_language">Мова</string>
     <string name="settings_language_system">Системна</string>
     <string name="settings_show_onboarding">Показати онбординг знову</string>
+    <string name="home_sign_out">Вийти</string>
+
+    <string name="auth_title">З поверненням!</string>
+    <string name="auth_subtitle">Увійдіть, щоб і далі готувати улюблені рецепти</string>
+    <string name="auth_username">Ім’я користувача</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_sign_in">Увійти</string>
+    <string name="auth_show_password">Показати пароль</string>
+    <string name="auth_hide_password">Приховати пароль</string>
+    <string name="auth_username_error_empty">Введіть ім’я користувача</string>
+    <string name="auth_username_error_too_short">Ім’я користувача має містити щонайменше %1$d символи</string>
+    <string name="auth_username_error_too_long">Ім’я користувача має містити не більше %1$d символів</string>
+    <string name="auth_username_error_invalid">Використовуйте лише латинські літери, цифри, крапку, підкреслення або дефіс</string>
+    <string name="auth_password_error_empty">Введіть пароль</string>
+    <string name="auth_password_error_too_short">Пароль має містити щонайменше %1$d символів</string>
+    <string name="auth_password_error_spaces">Пароль не повинен містити пробілів</string>
+    <string name="home_soon">Скоро</string>
+    <string name="auth_username_placeholder">Введіть ім’я</string>
+    <string name="auth_password_placeholder">Мінімум %1$d символів</string>
 </resources>

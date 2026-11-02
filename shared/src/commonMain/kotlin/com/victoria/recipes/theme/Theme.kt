@@ -7,58 +7,70 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.victoria.recipes.settings.ThemeMode
+import com.victoria.recipes.domain.model.ThemeMode
 
 private val LightColors = lightColorScheme(
-    primary = PrimaryLight,
-    onPrimary = OnPrimaryLight,
-    primaryContainer = PrimaryContainerLight,
-    onPrimaryContainer = OnPrimaryContainerLight,
-    secondary = SecondaryLight,
-    onSecondary = OnSecondaryLight,
-    secondaryContainer = SecondaryContainerLight,
-    onSecondaryContainer = OnSecondaryContainerLight,
-    tertiary = TertiaryLight,
-    onTertiary = OnTertiaryLight,
-    tertiaryContainer = TertiaryContainerLight,
-    onTertiaryContainer = OnTertiaryContainerLight,
-    background = BackgroundLight,
-    onBackground = OnBackgroundLight,
-    surface = SurfaceLight,
-    onSurface = OnSurfaceLight,
-    surfaceVariant = SurfaceVariantLight,
-    onSurfaceVariant = OnSurfaceVariantLight,
-    outline = OutlineLight,
+    primary = Terracotta,
+    onPrimary = Color.White,
+    primaryContainer = Sand,
+    onPrimaryContainer = Chocolate,
+    secondary = Peach,
+    onSecondary = Chocolate,
+    secondaryContainer = SandDeep,
+    onSecondaryContainer = Chocolate,
+    tertiary = Peach,
+    onTertiary = Chocolate,
+    background = Cream,
+    onBackground = Chocolate,
+    surface = CreamSurface,
+    onSurface = Chocolate,
+    surfaceVariant = Sand,
+    onSurfaceVariant = Cocoa,
+    surfaceContainer = Sand,
+    outline = Latte,
+    outlineVariant = Latte,
+    error = ErrorLight,
+    errorContainer = ErrorContainerLight,
+    onErrorContainer = ErrorLight,
 )
 
 private val DarkColors = darkColorScheme(
-    primary = PrimaryDark,
-    onPrimary = OnPrimaryDark,
-    primaryContainer = PrimaryContainerDark,
-    onPrimaryContainer = OnPrimaryContainerDark,
-    secondary = SecondaryDark,
-    onSecondary = OnSecondaryDark,
-    secondaryContainer = SecondaryContainerDark,
-    onSecondaryContainer = OnSecondaryContainerDark,
-    tertiary = TertiaryDark,
-    onTertiary = OnTertiaryDark,
-    tertiaryContainer = TertiaryContainerDark,
-    onTertiaryContainer = OnTertiaryContainerDark,
-    background = BackgroundDark,
-    onBackground = OnBackgroundDark,
-    surface = SurfaceDark,
-    onSurface = OnSurfaceDark,
-    surfaceVariant = SurfaceVariantDark,
-    onSurfaceVariant = OnSurfaceVariantDark,
-    outline = OutlineDark,
+    primary = Peach,
+    onPrimary = OnPeach,
+    primaryContainer = Mocha,
+    onPrimaryContainer = Milk,
+    secondary = Peach,
+    onSecondary = OnPeach,
+    secondaryContainer = MochaDeep,
+    onSecondaryContainer = Milk,
+    tertiary = Peach,
+    onTertiary = OnPeach,
+    background = Night,
+    onBackground = Milk,
+    surface = Espresso,
+    onSurface = Milk,
+    surfaceVariant = Mocha,
+    onSurfaceVariant = Caramel,
+    surfaceContainer = Mocha,
+    outline = Bark,
+    outlineVariant = Bark,
+    error = ErrorDark,
+    errorContainer = ErrorContainerDark,
+    onErrorContainer = ErrorDark,
 )
 
 private val AppShapes = Shapes(
-    small = RoundedCornerShape(12.dp),
-    medium = RoundedCornerShape(20.dp),
+    small = RoundedCornerShape(16.dp),
+    medium = RoundedCornerShape(18.dp),
     large = RoundedCornerShape(28.dp),
+    extraLarge = RoundedCornerShape(32.dp),
 )
+
+val LocalDarkTheme = staticCompositionLocalOf { false }
 
 @Composable
 fun RecipesTheme(
@@ -70,10 +82,12 @@ fun RecipesTheme(
         ThemeMode.LIGHT -> false
         ThemeMode.DARK -> true
     }
-    MaterialTheme(
-        colorScheme = if (dark) DarkColors else LightColors,
-        typography = appTypography(),
-        shapes = AppShapes,
-        content = content,
-    )
+    CompositionLocalProvider(LocalDarkTheme provides dark) {
+        MaterialTheme(
+            colorScheme = if (dark) DarkColors else LightColors,
+            typography = appTypography(),
+            shapes = AppShapes,
+            content = content,
+        )
+    }
 }

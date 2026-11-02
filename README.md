@@ -1,6 +1,6 @@
 # Recipes — KMP (Android, Desktop, Web)
 
-Лабораторна робота №4 з курсу «Крос-платформне програмування». Варіант 2: клієнт для відкритого API
+Лабораторні роботи №4–5 з курсу «Крос-платформне програмування». Варіант 2: клієнт для відкритого API
 [DummyJSON](https://dummyjson.com/docs/recipes), галузь — **рецепти**.
 
 ## Що зроблено в ЛР4
@@ -16,6 +16,25 @@
   і кнопками «Назад», «Далі», «Пропустити», «Почати готувати».
 - Локалізація українською (`values-uk`) та англійською (`values`). Мову можна змінити в налаштуваннях застосунку
   (Системна / Українська / English), вибір зберігається через multiplatform-settings.
+
+## Що зроблено в ЛР5
+
+- **Navigation 3** (`navigation3-ui`, `lifecycle-viewmodel-navigation3`): маршрути `Route.Onboarding`, `Route.Auth`,
+  `Route.Home` (`navigation/Route.kt`), back stack через `rememberNavBackStack`, екрани в `NavDisplay` (`navigation/AppNavigation.kt`).
+- **Koin** для впровадження залежностей (`di/Koin.kt`): модулі `dataModule`, `domainModule`, `presentationModule`.
+  Ініціалізація в `RecipesApplication` (Android) та у функціях `main` для Desktop і Web.
+- **multiplatform-settings** працює через репозиторії `OnboardingRepositoryImpl` і `PreferencesRepositoryImpl`.
+- **MVI**: базовий клас `MviViewModel<State, Intent, Effect>`. Для онбордингу, авторизації та головного екрана є
+  `*Contract.kt` (стан, наміри, ефекти) і `*ViewModel.kt`.
+- **Use cases**: `CompleteOnboardingUseCase`, `IsOnboardingCompletedUseCase`, `ResetOnboardingUseCase`,
+  `ValidateUsernameUseCase`, `ValidatePasswordUseCase`, а також для теми та мови.
+- `MainViewModel` перевіряє, чи пройдено онбординг, і обирає стартовий екран: онбординг або авторизація.
+- Екран авторизації: валідація імені користувача (3–30 символів, латинські літери, цифри, `.`, `_`, `-`) і пароля
+  (від 8 символів, без пробілів). Клавіша дії на клавіатурі в полі імені переводить фокус на пароль, а в полі пароля
+  виконує вхід, так само як кнопка «Увійти».
+- Оновлений дизайн за макетами у Figma: кремова та темна теми з теракотовим і персиковим акцентами, фони з кухонним
+  начинням, маскот-котик на слайдах онбордингу, прогрес-бар на всю ширину зверху, картки з контентом унизу,
+  перемикачі-сегменти для теми та мови.
 
 ### Промпт для Stitch
 
