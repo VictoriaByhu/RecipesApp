@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -97,6 +98,7 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     trailingIcon: DrawableResource? = null,
+    loading: Boolean = false,
 ) {
     Button(
         onClick = onClick,
@@ -109,6 +111,14 @@ fun PrimaryButton(
             contentColor = MaterialTheme.colorScheme.onPrimary,
         ),
     ) {
+        if (loading) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.5.dp,
+                modifier = Modifier.size(22.dp),
+            )
+            return@Button
+        }
         Text(text, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 1)
         if (trailingIcon != null) {
             Spacer(Modifier.width(10.dp))

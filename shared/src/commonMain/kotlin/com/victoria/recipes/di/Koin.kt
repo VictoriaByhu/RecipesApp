@@ -4,22 +4,21 @@ import com.russhwolf.settings.Settings
 import com.victoria.recipes.auth.AuthViewModel
 import com.victoria.recipes.data.repository.OnboardingRepositoryImpl
 import com.victoria.recipes.data.repository.PreferencesRepositoryImpl
-import com.victoria.recipes.data.repository.SessionRepositoryImpl
 import com.victoria.recipes.domain.repository.OnboardingRepository
 import com.victoria.recipes.domain.repository.PreferencesRepository
-import com.victoria.recipes.domain.repository.SessionRepository
 import com.victoria.recipes.domain.usecase.CompleteOnboardingUseCase
 import com.victoria.recipes.domain.usecase.IsOnboardingCompletedUseCase
-import com.victoria.recipes.domain.usecase.IsSignedInUseCase
 import com.victoria.recipes.domain.usecase.ObserveLanguageUseCase
 import com.victoria.recipes.domain.usecase.ObserveThemeModeUseCase
 import com.victoria.recipes.domain.usecase.ResetOnboardingUseCase
 import com.victoria.recipes.domain.usecase.SetLanguageUseCase
 import com.victoria.recipes.domain.usecase.SetThemeModeUseCase
-import com.victoria.recipes.domain.usecase.SignInUseCase
-import com.victoria.recipes.domain.usecase.SignOutUseCase
 import com.victoria.recipes.domain.usecase.ValidatePasswordUseCase
 import com.victoria.recipes.domain.usecase.ValidateUsernameUseCase
+import com.victoria.recipes.domain.usecase.auth.GetCurrentUserUseCase
+import com.victoria.recipes.domain.usecase.auth.IsAuthorizedUseCase
+import com.victoria.recipes.domain.usecase.auth.LoginUseCase
+import com.victoria.recipes.domain.usecase.auth.LogoutUseCase
 import com.victoria.recipes.home.HomeViewModel
 import com.victoria.recipes.main.MainViewModel
 import com.victoria.recipes.onboarding.OnboardingViewModel
@@ -35,7 +34,6 @@ val dataModule = module {
     single<Settings> { Settings() }
     singleOf(::OnboardingRepositoryImpl) bind OnboardingRepository::class
     singleOf(::PreferencesRepositoryImpl) bind PreferencesRepository::class
-    singleOf(::SessionRepositoryImpl) bind SessionRepository::class
 }
 
 val domainModule = module {
@@ -48,9 +46,10 @@ val domainModule = module {
     factoryOf(::SetLanguageUseCase)
     factoryOf(::ValidateUsernameUseCase)
     factoryOf(::ValidatePasswordUseCase)
-    factoryOf(::IsSignedInUseCase)
-    factoryOf(::SignInUseCase)
-    factoryOf(::SignOutUseCase)
+    factoryOf(::LoginUseCase)
+    factoryOf(::LogoutUseCase)
+    factoryOf(::IsAuthorizedUseCase)
+    factoryOf(::GetCurrentUserUseCase)
 }
 
 val presentationModule = module {
@@ -63,6 +62,6 @@ val presentationModule = module {
 fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
-        modules(dataModule, domainModule, presentationModule)
+        modules(networkModule, dataModule, domainModule, presentationModule)
     }
 }

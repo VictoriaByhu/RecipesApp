@@ -48,4 +48,10 @@
     <string name="home_soon">Скоро</string>
     <string name="auth_username_placeholder">Введіть ім’я</string>
     <string name="auth_password_placeholder">Мінімум %1$d символів</string>
+    <string name="home_greeting_name">Привіт, %1$s!</string>
+    <string name="error_invalid_credentials">Неправильне ім’я користувача або пароль</string>
+    <string name="error_session_expired">Сесія завершилася. Увійдіть знову</string>
+    <string name="error_network">Немає з’єднання з інтернетом. Перевірте мережу й спробуйте ще раз</string>
+    <string name="error_server">Сервер тимчасово недоступний. Спробуйте пізніше</string>
+    <string name="error_unknown">Щось пішло не так. Спробуйте ще раз</string>
 </resources>

@@ -26,9 +26,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,10 +54,13 @@ import com.victoria.recipes.domain.model.UsernameError
 import com.victoria.recipes.domain.usecase.ValidatePasswordUseCase
 import com.victoria.recipes.domain.usecase.ValidateUsernameUseCase
 import com.victoria.recipes.mvi.ObserveEffects
+import com.victoria.recipes.ui.AppSnackbarHost
 import com.victoria.recipes.ui.BackgroundStyle
 import com.victoria.recipes.ui.PrimaryButton
 import com.victoria.recipes.ui.ScreenBackground
 import com.victoria.recipes.ui.SoftCard
+import com.victoria.recipes.ui.rememberErrorMessages
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -88,19 +94,27 @@ fun AuthScreen(
     viewModel: AuthViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val errorMessages = rememberErrorMessages()
+    val scope = rememberCoroutineScope()
 
     ObserveEffects(viewModel.effects) { effect ->
         when (effect) {
             AuthEffect.NavigateToHome -> onSignedIn()
+            is AuthEffect.ShowErrorSnackbar -> scope.launch {
+                snackbarHostState.currentSnackbarData?.dismiss()
+                snackbarHostState.showSnackbar(errorMessages.of(effect.error))
+            }
         }
     }
 
-    AuthContent(state = state, onIntent = viewModel::onIntent)
+    AuthContent(state = state, snackbarHostState = snackbarHostState, onIntent = viewModel::onIntent)
 }
 
 @Composable
 private fun AuthContent(
     state: AuthState,
+    snackbarHostState: SnackbarHostState,
     onIntent: (AuthIntent) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
@@ -172,6 +186,7 @@ private fun AuthContent(
                         onValueChange = { onIntent(AuthIntent.UsernameChanged(it)) },
                         placeholder = stringResource(Res.string.auth_username_placeholder),
                         leadingIcon = Res.drawable.ic_person,
+                        enabled = !state.isLoading,
                         error = state.usernameError?.let { usernameErrorText(it) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -190,6 +205,7 @@ private fun AuthContent(
                         onValueChange = { onIntent(AuthIntent.PasswordChanged(it)) },
                         placeholder = stringResource(Res.string.auth_password_placeholder, ValidatePasswordUseCase.MIN_LENGTH),
                         leadingIcon = Res.drawable.ic_lock,
+                        enabled = !state.isLoading,
                         error = state.passwordError?.let { passwordErrorText(it) },
                         visualTransformation = if (state.isPasswordVisible) {
                             VisualTransformation.None
@@ -222,11 +238,20 @@ private fun AuthContent(
                     PrimaryButton(
                         text = stringResource(Res.string.auth_sign_in),
                         onClick = signIn,
+                        loading = state.isLoading,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
         }
+        AppSnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .safeDrawingPadding()
+                .imePadding()
+                .padding(16.dp),
+        )
     }
 }
 
@@ -240,6 +265,7 @@ private fun AuthField(
     error: String?,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
+    enabled: Boolean,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailing: (@Composable () -> Unit)? = null,
 ) {
@@ -255,6 +281,7 @@ private fun AuthField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
             placeholder = {
                 Text(placeholder, color = colors.onSurfaceVariant.copy(alpha = 0.7f), fontSize = 16.sp)
             },

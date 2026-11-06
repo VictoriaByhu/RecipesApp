@@ -1,13 +1,15 @@
 package com.victoria.recipes.onboarding
 
+import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.victoria.recipes.domain.usecase.CompleteOnboardingUseCase
-import com.victoria.recipes.domain.usecase.IsSignedInUseCase
+import com.victoria.recipes.domain.usecase.auth.IsAuthorizedUseCase
 import com.victoria.recipes.mvi.MviViewModel
+import kotlinx.coroutines.launch
 
 class OnboardingViewModel(
     private val completeOnboarding: CompleteOnboardingUseCase,
-    private val isSignedIn: IsSignedInUseCase,
+    private val isAuthorized: IsAuthorizedUseCase,
 ) : MviViewModel<OnboardingState, OnboardingIntent, OnboardingEffect>(OnboardingState()) {
 
     private val log = Logger.withTag("Onboarding")
@@ -39,6 +41,8 @@ class OnboardingViewModel(
 
     private fun finish() {
         completeOnboarding()
-        sendEffect(if (isSignedIn()) OnboardingEffect.NavigateToHome else OnboardingEffect.NavigateToAuth)
+        viewModelScope.launch {
+            sendEffect(if (isAuthorized()) OnboardingEffect.NavigateToHome else OnboardingEffect.NavigateToAuth)
+        }
     }
 }

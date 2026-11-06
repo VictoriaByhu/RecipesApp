@@ -22,9 +22,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,18 +47,22 @@ import com.victoria.recipes.theme.HeroDarkStart
 import com.victoria.recipes.theme.HeroLightEnd
 import com.victoria.recipes.theme.HeroLightStart
 import com.victoria.recipes.theme.LocalDarkTheme
+import com.victoria.recipes.ui.AppSnackbarHost
 import com.victoria.recipes.ui.BackgroundStyle
 import com.victoria.recipes.ui.IconBox
 import com.victoria.recipes.ui.ScreenBackground
 import com.victoria.recipes.ui.SegmentedSelector
 import com.victoria.recipes.ui.SoftCard
 import com.victoria.recipes.ui.cardShadowColor
+import com.victoria.recipes.ui.rememberErrorMessages
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import recipesapp.shared.generated.resources.Res
 import recipesapp.shared.generated.resources.home_greeting
+import recipesapp.shared.generated.resources.home_greeting_name
 import recipesapp.shared.generated.resources.home_placeholder_desc
 import recipesapp.shared.generated.resources.home_placeholder_title
 import recipesapp.shared.generated.resources.home_sign_out
@@ -84,20 +91,27 @@ fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val errorMessages = rememberErrorMessages()
+    val scope = rememberCoroutineScope()
 
     ObserveEffects(viewModel.effects) { effect ->
         when (effect) {
             HomeEffect.NavigateToOnboarding -> onNavigateToOnboarding()
             HomeEffect.NavigateToAuth -> onSignedOut()
+            is HomeEffect.ShowErrorSnackbar -> scope.launch {
+                snackbarHostState.showSnackbar(errorMessages.of(effect.error))
+            }
         }
     }
 
-    HomeContent(state = state, onIntent = viewModel::onIntent)
+    HomeContent(state = state, snackbarHostState = snackbarHostState, onIntent = viewModel::onIntent)
 }
 
 @Composable
 private fun HomeContent(
     state: HomeState,
+    snackbarHostState: SnackbarHostState,
     onIntent: (HomeIntent) -> Unit,
 ) {
     val themeModes = ThemeMode.entries
@@ -114,7 +128,7 @@ private fun HomeContent(
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            Header()
+            Header(firstName = state.firstName)
             HeroCard()
 
             Text(
@@ -169,11 +183,18 @@ private fun HomeContent(
                 onClick = { onIntent(HomeIntent.SignOutClicked) },
             )
         }
+        AppSnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .safeDrawingPadding()
+                .padding(16.dp),
+        )
     }
 }
 
 @Composable
-private fun Header() {
+private fun Header(firstName: String?) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -192,7 +213,11 @@ private fun Header() {
         Spacer(Modifier.width(14.dp))
         Column {
             Text(
-                text = stringResource(Res.string.home_greeting),
+                text = if (firstName != null) {
+                    stringResource(Res.string.home_greeting_name, firstName)
+                } else {
+                    stringResource(Res.string.home_greeting)
+                },
                 style = MaterialTheme.typography.headlineSmall.copy(fontSize = 26.sp),
                 color = MaterialTheme.colorScheme.onBackground,
             )

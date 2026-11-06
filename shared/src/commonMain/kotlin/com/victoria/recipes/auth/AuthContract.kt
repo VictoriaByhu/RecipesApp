@@ -1,5 +1,6 @@
 package com.victoria.recipes.auth
 
+import com.victoria.recipes.domain.model.AppError
 import com.victoria.recipes.domain.model.PasswordError
 import com.victoria.recipes.domain.model.UsernameError
 
@@ -10,6 +11,7 @@ data class AuthState(
     val passwordError: PasswordError? = null,
     val isPasswordVisible: Boolean = false,
     val isValidationActive: Boolean = false,
+    val isLoading: Boolean = false,
 )
 
 sealed interface AuthIntent {
@@ -21,4 +23,5 @@ sealed interface AuthIntent {
 
 sealed interface AuthEffect {
     data object NavigateToHome : AuthEffect
+    data class ShowErrorSnackbar(val error: AppError) : AuthEffect
 }
