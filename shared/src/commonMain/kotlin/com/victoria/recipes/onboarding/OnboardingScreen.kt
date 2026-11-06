@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -64,6 +63,7 @@ import recipesapp.shared.generated.resources.onboarding_start
 @Composable
 fun OnboardingScreen(
     onNavigateToAuth: () -> Unit,
+    onNavigateToHome: () -> Unit,
     viewModel: OnboardingViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -79,6 +79,7 @@ fun OnboardingScreen(
         when (effect) {
             is OnboardingEffect.ScrollToPage -> pagerState.animateScrollToPage(effect.page)
             OnboardingEffect.NavigateToAuth -> onNavigateToAuth()
+            OnboardingEffect.NavigateToHome -> onNavigateToHome()
         }
     }
 
@@ -125,8 +126,8 @@ private fun OnboardingContent(
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
-                            .heightIn(max = 330.dp)
-                            .fillMaxWidth()
+                            .fillMaxSize()
+                            .padding(horizontal = 4.dp, vertical = 8.dp)
                             .graphicsLayer {
                                 val pageOffset = ((pagerState.currentPage - page) +
                                         pagerState.currentPageOffsetFraction).absoluteValue
